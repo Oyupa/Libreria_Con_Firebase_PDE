@@ -7,5 +7,8 @@ data class Novel(
     val synopsis: String = "",
     var isFavorite: Boolean = false,
     val reviews: MutableList<String> = mutableListOf()
-)
+
+) {
+    constructor() : this("", "Anónimo", 0, "", false, mutableListOf())
+}
 

@@ -11,6 +11,9 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.Calendar
@@ -19,14 +22,15 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var novelAdapter: NovelAdapter
-    private lateinit var novelList: MutableList<Novel> // Lista de novelas
+    private var novelList: MutableList<Novel> = mutableListOf()
+    private val db: FirebaseFirestore = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
         // Cargar las novelas desde SharedPreferences
-        loadNovelsFromPreferences()
+        loadNovelsFromDatabase()
 
         // Configuración del RecyclerView
         recyclerView = findViewById(R.id.recyclerViewNovels)
@@ -84,7 +88,7 @@ class MainActivity : ComponentActivity() {
             // Validar el año
             val currentYear = Calendar.getInstance().get(Calendar.YEAR)
             val year = if (yearString.isEmpty()) {
-                ""
+                0.toString() // Guardar como cadena vacía si no se proporciona
             } else {
                 try {
                     // Intentar convertir el año a un número entero
@@ -104,7 +108,7 @@ class MainActivity : ComponentActivity() {
             val newNovel = Novel(title, author, Integer.parseInt(year), synopsis)
             novelList.add(newNovel)
             novelAdapter.notifyDataSetChanged()
-            saveNovelsToPreferences() // Guardar las novelas después de agregar
+            saveNovelsToDatabase() // Guardar las novelas después de agregar
         }
         dialogBuilder.setNegativeButton("Cancelar", null)
 
@@ -117,7 +121,14 @@ class MainActivity : ComponentActivity() {
     private fun deleteNovel(novel: Novel) {
         novelList.remove(novel)
         novelAdapter.notifyDataSetChanged()
-        saveNovelsToPreferences() // Guardar las novelas después de eliminar
+        db.collection("Libreria").document(novel.title).delete()
+            .addOnSuccessListener {
+                Toast.makeText(this, "Novela eliminada con éxito", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error al eliminar la novela: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+        saveNovelsToDatabase()// Guardar las novelas después de eliminar
     }
 
     // Método para mostrar los detalles de la novela seleccionada
@@ -142,7 +153,7 @@ class MainActivity : ComponentActivity() {
             // Cambiar el texto del botón según el estado
             favoriteButton.text = if (novel.isFavorite) "Desmarcar Favorita" else "Marcar como Favorita"
             novelAdapter.notifyDataSetChanged()
-            saveNovelsToPreferences() // Guardar las novelas después de cambiar el estado de favorita
+            saveNovelsToDatabase()// Guardar las novelas después de cambiar el estado de favorita
         }
 
         // Botón para agregar reseñas
@@ -177,7 +188,7 @@ class MainActivity : ComponentActivity() {
 
             novel.reviews.add(review)
             findViewById<TextView>(R.id.textViewReviews).text = novel.reviews.joinToString("\n")
-            saveNovelsToPreferences() // Guardar las novelas después de agregar reseña
+            saveNovelsToDatabase() // Guardar las novelas después de agregar reseña
         }
         dialogBuilder.setNegativeButton("Cancelar", null)
 
@@ -185,24 +196,31 @@ class MainActivity : ComponentActivity() {
         dialogBuilder.show()
     }
 
-    private fun saveNovelsToPreferences() {
-        val sharedPreferences = getSharedPreferences("NovelLibraryPrefs", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val gson = Gson()
-        val json = gson.toJson(novelList)
-        editor.putString("novelList", json)
-        editor.apply()
+    private fun saveNovelsToDatabase() {
+        for (novel in novelList) {
+            db.collection("Libreria").document(novel.title).set(novel)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Novela guardada con éxito", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(this, "Error al guardar la novela: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
-    private fun loadNovelsFromPreferences() {
-        val sharedPreferences = getSharedPreferences("NovelLibraryPrefs", MODE_PRIVATE)
-        val gson = Gson()
-        val json = sharedPreferences.getString("novelList", null)
-        val type = object : TypeToken<MutableList<Novel>>() {}.type
-        novelList = if (json != null) {
-            gson.fromJson(json, type)
-        } else {
-            mutableListOf()
-        }
+    private fun loadNovelsFromDatabase() {
+        db.collection("Libreria")
+            .get()
+            .addOnSuccessListener { result ->
+                novelList.clear()
+                for (document in result) {
+                    val novel = document.toObject(Novel::class.java)
+                    novelList.add(novel)
+                }
+                novelAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error al cargar las novelas: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }
