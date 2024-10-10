@@ -128,11 +128,11 @@ class MainActivity : ComponentActivity() {
         novelDetailView.visibility = View.VISIBLE
 
         // Asignar la información de la novela a los TextView correspondientes
-        findViewById<TextView>(R.id.textViewNovelTitle).text = novel.title
-        findViewById<TextView>(R.id.textViewNovelAuthor).text = "Autor: ${novel.author}"
-        findViewById<TextView>(R.id.textViewNovelYear).text = "Año: ${novel.year}"
-        findViewById<TextView>(R.id.textViewNovelSynopsis).text = "Sinopsis: ${novel.synopsis}"
-        findViewById<TextView>(R.id.textViewReviews).text = novel.reviews.joinToString("\n")
+        //findViewById<TextView>(R.id.textViewNovelTitle).text = novel.title
+        //findViewById<TextView>(R.id.textViewNovelAuthor).text = "Autor: ${novel.author}"
+        //findViewById<TextView>(R.id.textViewNovelYear).text = "Año: ${novel.year}"
+        findViewById<TextView>(R.id.textViewNovelSynopsis).text = if (novel.synopsis=="")"No hay sinopsis" else "Sinopsis: ${novel.synopsis}"
+        findViewById<TextView>(R.id.textViewReviews).text ="Reseñas:" + novel.reviews.joinToString("\n")
 
         // Botón para marcar como favorita
         val favoriteButton = findViewById<Button>(R.id.buttonFavorite)
@@ -148,6 +148,11 @@ class MainActivity : ComponentActivity() {
         // Botón para agregar reseñas
         findViewById<Button>(R.id.buttonAddReview).setOnClickListener {
             addReview(novel)
+        }
+
+        // Botón para cerrar los detalles
+        findViewById<Button>(R.id.buttonCloseDetails).setOnClickListener {
+            novelDetailView.visibility = View.GONE
         }
     }
 
