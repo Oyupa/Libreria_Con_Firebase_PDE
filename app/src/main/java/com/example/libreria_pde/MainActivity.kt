@@ -3,6 +3,7 @@ package com.example.libreria_pde
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -132,16 +133,16 @@ class MainActivity : ComponentActivity() {
     }
 
     // Método para mostrar los detalles de la novela seleccionada
-    // Método para mostrar los detalles de la novela seleccionada
     private fun showNovelDetails(novel: Novel) {
         // Mostrar el layout de detalles
         val novelDetailView: LinearLayout = findViewById(R.id.novelDetailView)
-        novelDetailView.visibility = View.VISIBLE
+        if (novelDetailView.visibility == View.GONE) {
+            val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+            novelDetailView.startAnimation(slideUp)
+            novelDetailView.visibility = View.VISIBLE
+        }
 
         // Asignar la información de la novela a los TextView correspondientes
-        //findViewById<TextView>(R.id.textViewNovelTitle).text = novel.title
-        //findViewById<TextView>(R.id.textViewNovelAuthor).text = "Autor: ${novel.author}"
-        //findViewById<TextView>(R.id.textViewNovelYear).text = "Año: ${novel.year}"
         findViewById<TextView>(R.id.textViewNovelSynopsis).text = if (novel.synopsis=="")"No hay sinopsis" else "Sinopsis: ${novel.synopsis}"
         findViewById<TextView>(R.id.textViewReviews).text ="Reseñas:" + novel.reviews.joinToString("\n")
 
@@ -163,6 +164,8 @@ class MainActivity : ComponentActivity() {
 
         // Botón para cerrar los detalles
         findViewById<Button>(R.id.buttonCloseDetails).setOnClickListener {
+            val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
+            novelDetailView.startAnimation(slideDown)
             novelDetailView.visibility = View.GONE
         }
     }
@@ -197,15 +200,18 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun saveNovelsToDatabase() {
+        var exito = true
         for (novel in novelList) {
             db.collection("Libreria").document(novel.title).set(novel)
-                .addOnSuccessListener {
+                /*.addOnSuccessListener {
                     Toast.makeText(this, "Novela guardada con éxito", Toast.LENGTH_SHORT).show()
-                }
+                }*/
                 .addOnFailureListener { exception ->
                     Toast.makeText(this, "Error al guardar la novela: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    exito = false
                 }
         }
+        if (exito) Toast.makeText(this, "Novelas guardadas con éxito", Toast.LENGTH_SHORT).show()
     }
 
     private fun loadNovelsFromDatabase() {
