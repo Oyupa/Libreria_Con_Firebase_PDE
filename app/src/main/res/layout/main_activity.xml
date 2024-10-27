@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -38,31 +39,6 @@
             android:layout_marginTop="0dp"
             android:layout_gravity="end"/>
 
-        <!--
-        <TextView
-            android:id="@+id/textViewNovelTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Título de la Novela"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/textViewNovelAuthor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Autor: Anónimo"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/textViewNovelYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Año: "
-            android:layout_marginBottom="8dp" />
-
-        -->
 
         <TextView
             android:id="@+id/textViewNovelSynopsis"
