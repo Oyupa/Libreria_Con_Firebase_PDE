@@ -1,6 +1,7 @@
 package com.example.libreria_pde
 
 import android.app.AlertDialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -10,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.core.view.ViewCompat.setBackground
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
@@ -21,20 +23,28 @@ import java.util.Calendar
 
 class MainActivity : ComponentActivity() {
 
+    private lateinit var rootLayout: LinearLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var novelAdapter: NovelAdapter
     private var novelList: MutableList<Novel> = mutableListOf()
     private val db: FirebaseFirestore = Firebase.firestore
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
+        rootLayout = findViewById(R.id.rootLayout)
+        recyclerView = findViewById(R.id.recyclerViewNovels)
+
+        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+        var isDarkMode = sharedPreferences.getBoolean("isDarkMode", false)
+        setBackground(isDarkMode)
+
         // Cargar las novelas desde SharedPreferences
         loadNovelsFromDatabase()
 
         // Configuración del RecyclerView
-        recyclerView = findViewById(R.id.recyclerViewNovels)
         novelAdapter = NovelAdapter(novelList, { novel -> showNovelDetails(novel) }, { novel -> deleteNovel(novel) })
         recyclerView.adapter = novelAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -43,6 +53,13 @@ class MainActivity : ComponentActivity() {
         val addNovelButton: Button = findViewById(R.id.buttonAddNovel)
         addNovelButton.setOnClickListener {
             addNewNovel()
+        }
+
+        val toggleButton: Button = findViewById(R.id.buttonToggleTheme)
+        toggleButton.setOnClickListener {
+            isDarkMode = !isDarkMode
+            sharedPreferences.edit().putBoolean("isDarkMode", isDarkMode).apply()
+            setBackground(isDarkMode)
         }
 
     }
@@ -228,5 +245,18 @@ class MainActivity : ComponentActivity() {
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Error al cargar las novelas: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+    private fun setBackground(isDarkMode: Boolean) {
+        val backgroundColor = if (isDarkMode) {
+            getColor(R.color.darkBackground)
+        } else {
+            getColor(R.color.lightBackground)
+        }
+        changeBackgroundColor(backgroundColor)
+    }
+    private fun changeBackgroundColor(color: Int) {
+        rootLayout.setBackgroundColor(color)
+        // Guardar el color en SharedPreferences
+        sharedPreferences.edit().putInt("backgroundColor", color).apply()
     }
 }

@@ -2,16 +2,10 @@ package com.example.libreria_pde
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.unit.dp
 import com.google.firebase.firestore.FirebaseFirestore
 import java.security.MessageDigest
 
@@ -22,45 +16,26 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         db = FirebaseFirestore.getInstance()
 
-        setContent {
-            LoginScreen()
+        // Usa el diseño XML en lugar de Jetpack Compose
+        setContentView(R.layout.login_activity)
+
+        val editTextUsername = findViewById<EditText>(R.id.editTextUsername)
+        val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
+        val buttonLogin = findViewById<Button>(R.id.buttonLogin)
+        val buttonRegister = findViewById<Button>(R.id.buttonRegister)
+
+        // Configura el listener de "Iniciar sesión"
+        buttonLogin.setOnClickListener {
+            val username = editTextUsername.text.toString()
+            val password = editTextPassword.text.toString()
+            loginUser(username, password)
         }
-    }
 
-    @Composable
-    fun LoginScreen() {
-        var username by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            TextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Username") }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            TextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") },
-                visualTransformation = PasswordVisualTransformation()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row {
-                Button(onClick = { loginUser(username, password) }) {
-                    Text("Login")
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Button(onClick = { registerUser(username, password) }) {
-                    Text("Register")
-                }
-            }
+        // Configura el listener de "Registrarse"
+        buttonRegister.setOnClickListener {
+            val username = editTextUsername.text.toString()
+            val password = editTextPassword.text.toString()
+            registerUser(username, password)
         }
     }
 
@@ -70,11 +45,10 @@ class LoginActivity : ComponentActivity() {
             return
         }
 
-        // Obtiene todos los usernames y verifica si el username ya existe
         getAllUsernames { usernames ->
             if (usernames.contains(username)) {
                 showToast("El nombre de usuario ya está en uso")
-                return@getAllUsernames // Termina la función si el nombre ya existe
+                return@getAllUsernames
             }
 
             val hashedPassword = hashPassword(password)
@@ -136,6 +110,7 @@ class LoginActivity : ComponentActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
     private fun getAllUsernames(onUsernamesFetched: (List<String>) -> Unit) {
         db.collection("Users")
             .get()
@@ -147,11 +122,10 @@ class LoginActivity : ComponentActivity() {
                         usernames.add(username)
                     }
                 }
-                onUsernamesFetched(usernames) // Retorna la lista de usernames
+                onUsernamesFetched(usernames)
             }
             .addOnFailureListener { e ->
                 showToast("Error al obtener nombres de usuario: ${e.message}")
             }
     }
-
 }
