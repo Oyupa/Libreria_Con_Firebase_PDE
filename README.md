@@ -40,6 +40,13 @@ Esta aplicación es una biblioteca para gestionar novelas. Permite a los usuario
     - Añadí animaciones y transiciones para mejorar la experiencia del usuario.
     - Mejoré el diseño de la pantalla principal y de los detalles de la novela.
 
+### Versión 3.0:
+1. **Implementación de Autenticación:**
+    - Añadí una base de datos de usuarios en Firebase para gestionar la autenticación.
+    - Implementé métodos para el registro y el inicio de sesión de los usuarios de manera segura para que las contraseñas no se guarden en texto plano.
+    - Añadí una pantalla de inicio de sesión y registro para los usuarios.
+    - Implementé el tema oscuro en la aplicación para mejorar la experiencia de los usuarios.
+
 ## Funcionalidades Implementadas
 
 - **Agregar Novelas:** Permite a los usuarios ingresar datos de una nueva novela.
@@ -58,3 +65,7 @@ Esta aplicación es una biblioteca para gestionar novelas. Permite a los usuario
 ### Versión 2.0:
 - **Integración con Firebase:** La integración con Firebase Database presentó desafíos al configurar los parametros de la base de datos y al implementar los métodos de carga y guardado de datos. Se resolvió comparando otros códigos de programas con Firebase.
 - **Actualización de la Interfaz de Usuario:** Al añadir animaciones y transiciones, hubo problemas de rendimiento y visualización. Se solucionaron ajustando la duración y la configuración de las animaciones.
+
+### Versión 3.0:
+- **Implementación de Autenticación:** La implementación de la autenticación de usuarios con Firebase Authenticator presentó desafíos al configurar las reglas de seguridad y al manejar los datos de los usuarios. Se resolvió cambiando a una base de datos de usuarios en Firebase y utilizando métodos seguros para el registro y el inicio de sesión implementados por mi.
+- **Tema Oscuro:** Al implementar el tema oscuro, hubo problemas con la visualización de los elementos de la interfaz de usuario. Se solucionaron cambiando los layouts.
