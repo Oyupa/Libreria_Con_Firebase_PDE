@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    // Método para agregar una nueva novela
+    // Metodo para agregar una nueva novela
     private fun addNewNovel() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("Agregar Nueva Novela")
@@ -135,7 +135,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    // Método para eliminar una novela
+    // Metodo para eliminar una novela
     private fun deleteNovel(novel: Novel) {
         novelList.remove(novel)
         novelAdapter.notifyDataSetChanged()
@@ -149,7 +149,7 @@ class MainActivity : ComponentActivity() {
         saveNovelsToDatabase()// Guardar las novelas después de eliminar
     }
 
-    // Método para mostrar los detalles de la novela seleccionada
+    // Metodo para mostrar los detalles de la novela seleccionada
     private fun showNovelDetails(novel: Novel) {
         // Mostrar el layout de detalles
         val novelDetailView: LinearLayout = findViewById(R.id.novelDetailView)
@@ -188,7 +188,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    // Método para agregar reseñas a la novela seleccionada
+    // Metodo para agregar reseñas a la novela seleccionada
     private fun addReview(novel: Novel) {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("Agregar Reseña")
@@ -220,9 +220,6 @@ class MainActivity : ComponentActivity() {
         var exito = true
         for (novel in novelList) {
             db.collection("Libreria").document(novel.title).set(novel)
-                /*.addOnSuccessListener {
-                    Toast.makeText(this, "Novela guardada con éxito", Toast.LENGTH_SHORT).show()
-                }*/
                 .addOnFailureListener { exception ->
                     Toast.makeText(this, "Error al guardar la novela: ${exception.message}", Toast.LENGTH_SHORT).show()
                     exito = false

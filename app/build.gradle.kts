@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.libreria_pde"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.libreria_pde"
@@ -69,12 +69,15 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation ("androidx.appcompat:appcompat:1.3.0")
-    implementation ("com.google.android.material:material:1.4.0")
     implementation ("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation ("androidx.recyclerview:recyclerview:1.2.0")
     implementation ("androidx.room:room-runtime:2.3.0")
     implementation ("com.google.code.gson:gson:2.8.8")
     annotationProcessor ("androidx.room:room-compiler:2.3.0")
-    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation ("com.google.android.material:material:1.7.0")
+    implementation ("androidx.appcompat:appcompat:1.4.0")
+    implementation ("com.google.android.material:material:1.7.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.android.gms:play-services-auth:20.3.0")
 }
