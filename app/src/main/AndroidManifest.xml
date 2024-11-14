@@ -29,7 +29,7 @@
         android:name=".MainActivity"
         android:exported="true"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Libreria_PDE" />
+        android:theme="@style/Theme.AppCompat.DayNight" />
 
         <receiver android:name=".NovelWidgetProvider"
             android:exported="true">

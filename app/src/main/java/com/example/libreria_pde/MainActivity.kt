@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat.setBackground
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.Calendar
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var rootLayout: LinearLayout
     private lateinit var recyclerView: RecyclerView
@@ -151,41 +152,17 @@ class MainActivity : ComponentActivity() {
 
     // Metodo para mostrar los detalles de la novela seleccionada
     private fun showNovelDetails(novel: Novel) {
-        // Mostrar el layout de detalles
-        val novelDetailView: LinearLayout = findViewById(R.id.novelDetailView)
-        if (novelDetailView.visibility == View.GONE) {
-            val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
-            novelDetailView.startAnimation(slideUp)
-            novelDetailView.visibility = View.VISIBLE
-        }
+        val novelDetailFragment = NovelDetailFragment.newInstance(novel.toSerializable())
 
-        // Asignar la información de la novela a los TextView correspondientes
-        findViewById<TextView>(R.id.textViewNovelSynopsis).text = if (novel.synopsis=="")"No hay sinopsis" else "Sinopsis: ${novel.synopsis}"
-        findViewById<TextView>(R.id.textViewReviews).text ="Reseñas:" + novel.reviews.joinToString("\n")
 
-        // Botón para marcar como favorita
-        val favoriteButton = findViewById<Button>(R.id.buttonFavorite)
-        favoriteButton.text = if (novel.isFavorite) "Desmarcar Favorita" else "Marcar como Favorita"
-        favoriteButton.setOnClickListener {
-            novel.isFavorite = !novel.isFavorite
-            // Cambiar el texto del botón según el estado
-            favoriteButton.text = if (novel.isFavorite) "Desmarcar Favorita" else "Marcar como Favorita"
-            novelAdapter.notifyDataSetChanged()
-            saveNovelsToDatabase()// Guardar las novelas después de cambiar el estado de favorita
-        }
-
-        // Botón para agregar reseñas
-        findViewById<Button>(R.id.buttonAddReview).setOnClickListener {
-            addReview(novel)
-        }
-
-        // Botón para cerrar los detalles
-        findViewById<Button>(R.id.buttonCloseDetails).setOnClickListener {
-            val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
-            novelDetailView.startAnimation(slideDown)
-            novelDetailView.visibility = View.GONE
-        }
+        // Usar el FragmentManager para agregar el fragmento con animación
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+            .replace(R.id.rootLayout, novelDetailFragment) // El fragmento se agregará en el layout principal
+            .addToBackStack(null) // Permite volver atrás y cerrar el fragmento
+            .commit()
     }
+
 
 
     // Metodo para agregar reseñas a la novela seleccionada

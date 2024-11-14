@@ -1,6 +1,12 @@
 Link al repositorio: https://github.com/Oyupa/Libreria_Con_Firebase_PDE
 
+
 # Librería de Novelas
+
+## Antes de empezar
+Aunque se puede crear un usuario nuevo si es necesario. Ya existen varios. Uno de ellos es:
+- Usuario: admin
+- Contraseña: admin
 
 ## Descripción de la Aplicación
 
@@ -13,6 +19,7 @@ Esta aplicación es una biblioteca para gestionar novelas. Permite a los usuario
 3. **Detalles de Novela:** Al seleccionar una novela de la lista, se muestra una vista detallada con toda la información relevante.
 4. **Favoritos:** Los usuarios pueden marcar novelas como favoritas y verlas en una sección designada.
 5. **Reseñas:** Se pueden agregar reseñas para cada novela, proporcionando una mejor interacción con el contenido.
+6. **Autenticación de Usuarios:** Los usuarios pueden registrarse e iniciar sesión para guardar sus datos de manera segura.
 
 ## Pasos Seguidos para Crear la Aplicación
 ### Versión 1.0:
@@ -31,6 +38,7 @@ Esta aplicación es una biblioteca para gestionar novelas. Permite a los usuario
     - Utilicé SharedPreferences para guardar las novelas y su estado (favoritas, reseñas) de manera persistente.
 6. **Manejo de Errores:**
     - Añadí validaciones para asegurar que los datos introducidos por el usuario sean correctos y manejé posibles excepciones durante la ejecución.
+
 ### Versión 2.0:
 1. **Implementación de una Base de Datos:**
     - Utilicé Firebase Database para almacenar y recuperar los datos de las novelas.
@@ -47,6 +55,14 @@ Esta aplicación es una biblioteca para gestionar novelas. Permite a los usuario
     - Añadí una pantalla de inicio de sesión y registro para los usuarios.
     - Implementé el tema oscuro en la aplicación para mejorar la experiencia de los usuarios.
 
+### Versión 4.0:
+1. **Implementación de un Fragmento de Detalles:**
+    - Añadí un fragmento para mostrar los detalles de las novelas en una vista separada.
+    - Implementé la navegación entre el fragmento y la actividad principal.
+2. **Widget de Favoritos:** 
+    - Implementé un widget para mostrar las novelas favoritas en la pantalla de inicio del dispositivo.
+    - Añadí métodos para actualizar el widget cuando se marcan o desmarcan novelas como favoritas.
+
 ## Funcionalidades Implementadas
 
 - **Agregar Novelas:** Permite a los usuarios ingresar datos de una nueva novela.
@@ -54,6 +70,9 @@ Esta aplicación es una biblioteca para gestionar novelas. Permite a los usuario
 - **Ver Detalles:** Al hacer clic en una novela, se muestran sus detalles completos.
 - **Marcar como Favorita:** Los usuarios pueden marcar novelas como favoritas.
 - **Agregar Reseñas:** Posibilidad de agregar reseñas a las novelas.
+- **Autenticación de Usuarios:** Registro e inicio de sesión de usuarios.
+- **Tema Oscuro:** Implementación de un tema oscuro para la aplicación.
+- **Widget:** Implementación de un widget para mostrar las novelas favoritas.
 
 ## Problemas Encontrados
 
@@ -69,3 +88,7 @@ Esta aplicación es una biblioteca para gestionar novelas. Permite a los usuario
 ### Versión 3.0:
 - **Implementación de Autenticación:** La implementación de la autenticación de usuarios con Firebase Authenticator presentó desafíos al configurar las reglas de seguridad y al manejar los datos de los usuarios. Se resolvió cambiando a una base de datos de usuarios en Firebase y utilizando métodos seguros para el registro y el inicio de sesión implementados por mi.
 - **Tema Oscuro:** Al implementar el tema oscuro, hubo problemas con la visualización de los elementos de la interfaz de usuario. Se solucionaron cambiando los layouts.
+
+### Versión 4.0:
+- **Problemas con el fragmento de detalles:** Al implementar el fragment de detalles de las novelas, se han perdido las funcionalidades de los botones.
+- **Incompatibilidad de los datos con el widget**: Al intentar implementar un widget para la aplicación, se ha encontrado problemas con la compatibilidad de los datos de la base de datos con el widget. Se han acabado solucionando buscando la solución en Internet (StackOverflow).

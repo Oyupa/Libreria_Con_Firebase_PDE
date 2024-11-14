@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#f0f0f0"
+    android:elevation="4dp">
+
+    <Button
+        android:id="@+id/buttonCloseDetails"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:text="X"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="end"/>
+
+    <TextView
+        android:id="@+id/textViewNovelSynopsis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sinopsis: "
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textViewReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reseñas:"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/buttonFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Marcar como Favorita"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/buttonAddReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agregar Reseña"
+        android:layout_marginBottom="8dp" />
+</LinearLayout>

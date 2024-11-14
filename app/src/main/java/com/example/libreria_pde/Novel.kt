@@ -10,5 +10,28 @@ data class Novel(
 
 ) {
     constructor() : this("", "Anónimo", 0, "", false, mutableListOf())
+
+    fun Novel.toSerializable(): NovelSerializable {
+        return NovelSerializable(
+            title = this.title,
+            author = this.author,
+            year = this.year,
+            synopsis = this.synopsis,
+            isFavorite = this.isFavorite,
+            reviews = this.reviews
+        )
+    }
+
+    fun toSerializable(): NovelSerializable {
+        return NovelSerializable(
+            title = this.title,
+            author = this.author,
+            year = this.year,
+            synopsis = this.synopsis,
+            isFavorite = this.isFavorite,
+            reviews = this.reviews
+        )
+    }
+
 }
 
